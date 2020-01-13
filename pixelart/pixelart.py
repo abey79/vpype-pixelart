@@ -34,7 +34,7 @@ PIXEL_OFFSET = 5
 @global_processor
 def pixelart(vector_data: VectorData, image, mode, pen_width: float):
     """
-    Insert documentation here.
+    Plot pixel art
     """
 
     img = imageio.imread(image, pilmode="LA")

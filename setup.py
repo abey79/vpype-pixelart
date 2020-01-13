@@ -8,7 +8,7 @@ with open("LICENSE") as f:
     license = f.read()
 
 setup(
-    name="Pixel Art Generator",
+    name="vpype-pixelart",
     version="0.1.0",
     description="",
     long_description=readme,
