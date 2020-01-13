@@ -131,4 +131,5 @@ dmypy.json
 .pyre/
 
 /my_work/
+.idea
 
