@@ -5,7 +5,25 @@
 
 ## Examples
 
-_to be completed_
+### `big` mode
+
+Cactus sprites from [Super Mario World](https://en.wikipedia.org/wiki/Super_Mario_World):
+
+<img src="https://i.imgur.com/uRhAOJv.png" alt="cactus">
+
+Result plotted with Pentel Sign Pen (using `--pen-width 0.6mm`):
+
+<img src="https://i.imgur.com/pMLkdvG.jpg" alt="big mode plotted pixelart" width=300>
+
+### `line` mode
+
+Original art by [Reddit](https://www.reddit.com/) user [u/\_NoMansDream](https://www.reddit.com/user/_NoMansDream/):
+
+<img src="https://i.redd.it/g1nv7tf20aw11.png" alt="pixel art by u/_NoMansDream" width=600>
+
+Result plotted with Pentel Sign Pen (using `--pen-width 0.6mm`):
+
+<img src="https://i.imgur.com/dAPqFGV.jpg" alt="line mode plotted pixelart" width=600>
 
 
 ## Installation
