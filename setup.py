@@ -20,7 +20,7 @@ setup(
     install_requires=[
         'click',
         'imageio',
-        'vpype @ git+https://github.com/abey79/vpype.git@feature-plugins',
+        'vpype @ git+https://github.com/abey79/vpype.git',
     ],
     entry_points='''
             [vpype.plugins]
