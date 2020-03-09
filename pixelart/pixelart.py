@@ -3,9 +3,7 @@ import logging
 import numpy as np
 import click
 import imageio
-from vpype.utils import Length
-from vpype.model import LineCollection, VectorData
-from vpype.decorators import global_processor
+from vpype import Length, LineCollection, VectorData, global_processor
 
 # normalized spiral trajectory for a single pixel
 # units are in pen width
