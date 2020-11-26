@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 with open("README.md") as f:
@@ -16,7 +16,7 @@ setup(
     author="Antoine Beyeler",
     url="",
     license=license,
-    packages=find_packages(exclude=("examples", "tests")),
+    packages=["pixelart"],
     install_requires=[
         'click',
         'imageio',
