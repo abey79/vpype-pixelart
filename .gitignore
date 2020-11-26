@@ -133,3 +133,4 @@ dmypy.json
 /my_work/
 .idea
 
+.DS_Store
