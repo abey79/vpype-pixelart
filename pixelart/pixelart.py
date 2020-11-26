@@ -3,7 +3,7 @@ import logging
 import numpy as np
 import click
 import imageio
-from vpype import Length, LineCollection, VectorData, global_processor
+from vpype import LengthType, LineCollection, Document, global_processor
 
 # normalized spiral trajectory for a single pixel
 # units are in pen width
@@ -25,15 +25,13 @@ PIXEL_OFFSET = 5
 
 @click.command()
 @click.argument("image", type=click.Path(exists=True, dir_okay=False))
-@click.option("--pen-width", type=Length(), default="0.6mm")
+@click.option("--pen-width", type=LengthType(), default="0.6mm")
 @click.option(
     "--mode", type=click.Choice(choices=["big", "line"], case_sensitive=False), default="big"
 )
 @global_processor
-def pixelart(vector_data: VectorData, image, mode, pen_width: float):
-    """
-    Plot pixel art
-    """
+def pixelart(document: Document, image, mode, pen_width: float):
+    """Plot pixel art"""
 
     img = imageio.imread(image, pilmode="LA")
     colors = np.unique(img[:, :, 0][img[:, :, 1] == 255])
@@ -49,7 +47,7 @@ def pixelart(vector_data: VectorData, image, mode, pen_width: float):
 
                 lines.append(line)
 
-            vector_data.add(LineCollection(lines), col_idx + 1)
+            document.add(LineCollection(lines), col_idx + 1)
     elif mode == "line":
         for row_idx, line in enumerate(img):
             start = 0
@@ -72,7 +70,7 @@ def pixelart(vector_data: VectorData, image, mode, pen_width: float):
                 layer_id = np.where(colors == line[start, 0])[0][0] + 1
                 segment = np.array([row_idx * 1j + (start - 0.1), row_idx * 1j + (end - 0.9)])
                 segment *= pen_width
-                vector_data.add(LineCollection([segment]), layer_id)
+                document.add(LineCollection([segment]), layer_id)
 
                 # move to the next line
                 start = end
@@ -80,7 +78,7 @@ def pixelart(vector_data: VectorData, image, mode, pen_width: float):
     else:
         logging.warning(f"pixelart: unknown mode {mode}, no geometry generated")
 
-    return vector_data
+    return document
 
 
 pixelart.help_group = "Plugins"
