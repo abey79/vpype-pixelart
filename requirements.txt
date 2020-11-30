@@ -1,7 +1,7 @@
 # base
 click
 imageio
-git+https://github.com/abey79/vpype@feature-plugins#egg=vpype
+vpype
 
 # dev/test
 pytest

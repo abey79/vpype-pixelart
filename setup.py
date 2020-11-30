@@ -21,7 +21,7 @@ setup(
         'click',
         'imageio',
         'numpy',
-        'vpype @ git+https://github.com/abey79/vpype.git',
+        'vpype',
     ],
     entry_points='''
             [vpype.plugins]
