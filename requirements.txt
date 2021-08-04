@@ -1,7 +1,7 @@
 # base
 click
 imageio
-vpype
+vpype[all]
 
 # dev/test
 pytest
