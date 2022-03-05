@@ -1,6 +1,5 @@
 from setuptools import setup
 
-
 with open("README.md") as f:
     readme = f.read()
 
@@ -18,13 +17,13 @@ setup(
     license=license,
     packages=["pixelart"],
     install_requires=[
-        'click',
-        'imageio',
-        'numpy',
-        'vpype[all]>=1.7',
+        "click",
+        "imageio",
+        "numpy",
+        "vpype[all]>=1.9,<2.0",
     ],
-    entry_points='''
+    entry_points="""
             [vpype.plugins]
             pixelart=pixelart.pixelart:pixelart
-        ''',
+        """,
 )
