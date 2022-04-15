@@ -3,9 +3,11 @@
 [_vpype_](https://github.com/abey79/vpype) plug-in to plot pixel art.
 
 
-## Examples
+## Mode `big`
 
-### `big` mode
+In this mode, each pixel is drawn using a 5x5 square spiral. The pixel pitch is thus five times the specified pen width.
+
+### Example
 
 Cactus sprites from [Super Mario World](https://en.wikipedia.org/wiki/Super_Mario_World):
 
@@ -15,7 +17,11 @@ Result plotted with Pentel Sign Pen (using `--pen-width 0.6mm`):
 
 <img src="https://i.imgur.com/pMLkdvG.jpg" alt="big mode plotted pixelart" width=300>
 
-### `line` mode
+## Mode `line`
+
+In this mode, horizontal lines are generated for horizontal sequences of same-color pixels. The pixel pitch is equal to the specified pen width. 
+
+### Example
 
 Original art by [Reddit](https://www.reddit.com/) user [u/\_NoMansDream](https://www.reddit.com/user/_NoMansDream/):
 
@@ -25,6 +31,10 @@ Result plotted with Pentel Sign Pen (using `--pen-width 0.6mm`):
 
 <img src="https://i.imgur.com/dAPqFGV.jpg" alt="line mode plotted pixelart" width=600>
 
+
+## Mode `snake`
+
+In this mode, [snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)-like lines attempt to traverse zones of contiguous, same-color pixels. Again, the pixel pitch is equal to the specified pen width.
 
 ## Installation
 

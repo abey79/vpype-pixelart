@@ -20,7 +20,7 @@ setup(
         "click",
         "imageio",
         "numpy",
-        "vpype[all]>=1.9,<2.0",
+        "vpype[all]>=1.10,<2.0",
     ],
     entry_points="""
             [vpype.plugins]
