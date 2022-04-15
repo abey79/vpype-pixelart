@@ -36,6 +36,17 @@ Result plotted with Pentel Sign Pen (using `--pen-width 0.6mm`):
 
 In this mode, [snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)-like lines attempt to traverse zones of contiguous, same-color pixels. Again, the pixel pitch is equal to the specified pen width.
 
+### Example
+
+Detail of the snake algoritm:
+
+<img width="600" alt="image" src="https://user-images.githubusercontent.com/49431240/163547592-0714d103-b27d-4ba9-a148-a26213523697.png">
+
+Result plotted with Pentel Sign Pen (using `--pen-width 0.5mm`):
+
+![vpype banner in MacPaint UX](https://user-images.githubusercontent.com/49431240/163547460-49c6e68d-11ed-4aff-a935-6e663bff4a8d.jpeg)
+
+
 ## Installation
 
 See _vpype_'s [installation instructions](https://vpype.readthedocs.io/en/latest/install.html) for information on how to install _vpype_.
