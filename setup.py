@@ -8,14 +8,19 @@ with open("LICENSE") as f:
 
 setup(
     name="vpype-pixelart",
-    version="0.1.0",
-    description="",
+    version="0.1.0a1",
+    description="Pixel art plug-in for vpype",
     long_description=readme,
     long_description_content_type="text/markdown",
     author="Antoine Beyeler",
-    url="",
-    license=license,
+    url="https://github.com/abey79/vpype-pixelart",
     packages=["pixelart"],
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "License :: OSI Approved :: MIT License",
+        "Topic :: Multimedia :: Graphics",
+        "Environment :: Plugins",
+    ],
     install_requires=[
         "click",
         "imageio",
