@@ -40,9 +40,10 @@ jobs:
           dist/*
 
     - name: pypi-publish
-      uses: pypa/gh-action-pypi-publish@v1.4.1
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
         # repository_url: https://test.pypi.org/legacy/
+        user: __token__
         password: ${{ secrets.PYPI_TOKEN }}
         # skip_existing: true
         verbose: true
