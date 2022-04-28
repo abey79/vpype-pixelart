@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import dataclasses
+import logging
+import math
 
 import click
-import imageio
 import numpy as np
 import vpype as vp
 import vpype_cli
+from PIL import Image, ImageDraw
 
 # normalized spiral trajectory for a single pixel
 # units are in pen width
@@ -147,7 +149,7 @@ def snake_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_w
         document.add(lc, col_idx)
 
 
-@click.command()
+@vpype_cli.cli.command(group="Pixel Art")
 @click.argument("image", type=vpype_cli.PathType(exists=True, dir_okay=False))
 @click.option("-pw", "--pen-width", type=vpype_cli.LengthType(), default="0.6mm")
 @click.option(
@@ -170,7 +172,9 @@ def pixelart(document: vp.Document, image, mode, pen_width: float):
 
     document.add_to_sources(image)
 
-    img = imageio.imread(image, pilmode="RGBA")
+    with Image.open(image) as image_file:
+        # noinspection PyTypeChecker
+        img = np.array(image_file.convert("RGBA"))
     colors = np.unique(img[:, :, 0:3][img[:, :, 3] == 255], axis=0)
 
     if mode == "big":
@@ -187,4 +191,75 @@ def pixelart(document: vp.Document, image, mode, pen_width: float):
     return document
 
 
-pixelart.help_group = "Plugins"
+@vpype_cli.cli.command(group="Pixel Art")
+@click.option("-pw", "--pen-width", type=vpype_cli.LengthType(), help="pen width")
+@click.option(
+    "-m",
+    "--mode",
+    type=click.Choice(choices=["big", "line", "snake"], case_sensitive=False),
+    default="big",
+    help="operation mode (same as `pixelart` command)",
+)
+@click.option("-k", "--keep-lines", is_flag=True, help="Keep the original lines.")
+@vpype_cli.layer_processor
+def pixelize(layer: vp.LineCollection, pen_width: float | None, mode: str, keep_lines: bool):
+    """Turn your vector into pixels, then back into vectors.
+
+    This command creates a bitmap from the geometries, and convert the bitmap back into vector
+    using one of the pixelart modes ("big", "line", "snake" -- see `vpype pixelart --help`).
+
+    The pixel size is determined by the layer's current pen width and can be overridden using
+    the `--pen-width` option. If undefined, the default pixel size is 0.6mm.
+
+    The original lines are replaced by the pixel-based geometries. Use `--keep-lines` to keep
+    them.
+    """
+
+    if pen_width is None:
+        pen_width = layer.property(vp.METADATA_FIELD_PEN_WIDTH) or vp.convert_length("0.6mm")
+    color = layer.property(vp.METADATA_FIELD_COLOR) or vp.Color("black")
+    color = color.red, color.green, color.blue
+
+    pixel_pitch = pen_width
+    if mode == "big":
+        pixel_pitch *= 5
+
+    bounds = layer.bounds()
+    if bounds is None:
+        logging.warning("!!! pixelize: layer is empty")
+        return layer
+    x_min, y_min, x_max, y_max = bounds
+
+    img_size = (
+        math.ceil((x_max - x_min) / pixel_pitch),
+        math.ceil((y_max - y_min) / pixel_pitch),
+    )
+    img = Image.new("RGBA", img_size)
+    draw = ImageDraw.Draw(img)
+    for line in layer:
+        draw.line(
+            [(pt.real, pt.imag) for pt in (line - x_min - 1j * y_min) / pixel_pitch],
+            fill=color,
+        )
+
+    doc = vp.Document()
+    if mode == "big":
+        # noinspection PyTypeChecker
+        big_mode(doc, np.array(img), np.array([color]), pen_width)
+    elif mode == "line":
+        # noinspection PyTypeChecker
+        line_mode(doc, np.array(img), np.array([color]), pen_width)
+    elif mode == "snake":
+        # noinspection PyTypeChecker
+        snake_mode(doc, np.array(img), np.array([color]), pen_width)
+
+    doc.translate(x_min, y_min)
+
+    if keep_lines:
+        layer.extend(doc.layers[1])
+        layer.set_property(vp.METADATA_FIELD_PEN_WIDTH, pen_width)
+        return layer
+    else:
+        result = layer.clone(doc.layers[1])
+        result.set_property(vp.METADATA_FIELD_PEN_WIDTH, pen_width)
+        return result

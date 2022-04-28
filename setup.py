@@ -24,12 +24,13 @@ setup(
     setup_requires=["wheel"],
     install_requires=[
         "click",
-        "imageio",
         "numpy",
+        "Pillow",
         "vpype[all]>=1.10,<2.0",
     ],
     entry_points="""
             [vpype.plugins]
             pixelart=pixelart.pixelart:pixelart
+            pixelize=pixelart.pixelart:pixelize
         """,
 )
