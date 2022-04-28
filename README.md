@@ -2,12 +2,46 @@
 
 [_vpype_](https://github.com/abey79/vpype) plug-in to plot pixel art.
 
+## Usage
 
-## Mode `big`
+### Convert pixelart image to vectors
+
+The `pixelart` command takes an image file as input and converts it to lines according to one of three modes (`big`, `line`, and `small` – see examples below). Each unique color in the the input file results in a new layer created. Pixels which are 100% transparent (alpha = 0) yield no output.
+
+Example invocation:
+
+```bash
+$ vpype pixelart --mode snake --pen-width .35mm input.png linesort write output.svg
+```
+
+Inline help:
+
+```bash
+$ vpype pixelart --help
+```
+
+### Convert geometries to bitmaps and back to vector
+
+The `pixelize` command rasterizes the current geometries into a bitmap, and converts them back to vectors similarly to the `pixelart` command.
+
+Example invocation:
+
+```bash
+$ vpype read input.svg pixelize --mode snake --pen-width .35mm linesort write output.svg
+```
+
+Inline help:
+
+```bash
+$ vpype pixelize --help
+```
+
+
+## Examples
+
+### Mode `big`
 
 In this mode, each pixel is drawn using a 5x5 square spiral. The pixel pitch is thus five times the specified pen width.
-
-### Example
 
 Cactus sprites from [Super Mario World](https://en.wikipedia.org/wiki/Super_Mario_World):
 
@@ -17,11 +51,9 @@ Result plotted with Pentel Sign Pen (using `--pen-width 0.6mm`):
 
 <img src="https://i.imgur.com/pMLkdvG.jpg" alt="big mode plotted pixelart" width=300>
 
-## Mode `line`
+### Mode `line`
 
 In this mode, horizontal lines are generated for horizontal sequences of same-color pixels. The pixel pitch is equal to the specified pen width. 
-
-### Example
 
 Original art by [Reddit](https://www.reddit.com/) user [u/\_NoMansDream](https://www.reddit.com/user/_NoMansDream/):
 
@@ -32,11 +64,9 @@ Result plotted with Pentel Sign Pen (using `--pen-width 0.6mm`):
 <img src="https://i.imgur.com/dAPqFGV.jpg" alt="line mode plotted pixelart" width=600>
 
 
-## Mode `snake`
+### Mode `snake`
 
 In this mode, [snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)-like lines attempt to traverse zones of contiguous, same-color pixels. Again, the pixel pitch is equal to the specified pen width.
-
-### Example
 
 Detail of the snake algoritm:
 
@@ -45,6 +75,14 @@ Detail of the snake algoritm:
 Result plotted with Pentel Sign Pen (using `--pen-width 0.5mm`):
 
 ![vpype banner in MacPaint UX](https://user-images.githubusercontent.com/49431240/163547460-49c6e68d-11ed-4aff-a935-6e663bff4a8d.jpeg)
+
+
+### `pixelize` command
+
+Series of cubes created with [vpype-perspective](https://github.com/abey79/vpype-perspective) and pixelated using `pixelize`:
+
+<img width="600" alt="image" src="https://user-images.githubusercontent.com/49431240/165774053-d29ad6b4-a82c-4d9b-bab7-cd73e827f351.jpeg">
+
 
 
 ## Installation
@@ -123,16 +161,6 @@ Commands:
     pixelart   Plot pixel art.
 [...]
 ```
-
-
-## Documentation
-
-The complete plug-in documentation is available directly in the CLI help:
-
-```bash
-$ vpype pixelart --help
-```
-
 
 ## License
 
