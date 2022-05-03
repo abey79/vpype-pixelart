@@ -155,14 +155,10 @@ def dot_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_wid
             np.all(img[:, :, 0:3] == color, axis=2) & (img[:, :, 3] == 255)
         )
 
-        lines = []
-        for i, j in zip(indice_j, indice_i):
-            center = i * PIXEL_OFFSET + j * PIXEL_OFFSET * 1j
-            line = (center, center + pen_width * 0.05)
+        paths = [vp.circle(i, j, pen_width * 0.05)
+                 for i, j in zip(indice_j, indice_i)]
 
-            lines.append(line)
-
-        document.add(vp.LineCollection(lines), col_idx)
+        document.add(vp.LineCollection(paths), col_idx)
 
 
 @vpype_cli.cli.command(group="Pixel Art")
