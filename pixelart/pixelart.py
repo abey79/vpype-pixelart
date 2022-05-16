@@ -99,9 +99,8 @@ def snake_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_w
         }
 
         cur_pixel: Pixel | None = None
-        cur_line: list[complex] = list([])
         cur_dir = (1, 0)
-        lc = vp.LineCollection()
+        lines: list[list[complex]] = [[]]
 
         while pixels:
             if cur_pixel is None:
@@ -120,14 +119,14 @@ def snake_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_w
                         cur_pixel = left
 
                 pixels.remove(cur_pixel)
-                cur_line = [cur_pixel.coord()]
+                lines[-1].append(cur_pixel.coord())
                 cur_dir = (1, 0)
 
             # try in the current direction first
             next_pixel = cur_pixel.move(cur_dir)
             if next_pixel in pixels:
                 cur_pixel = next_pixel
-                cur_line.append(cur_pixel.coord())
+                lines[-1].append(cur_pixel.coord())
                 pixels.remove(cur_pixel)
                 continue
 
@@ -135,16 +134,20 @@ def snake_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_w
             for cur_dir in DIRECTIONS - {cur_dir}:
                 if (next_pixel := cur_pixel.move(cur_dir)) in pixels:
                     cur_pixel = next_pixel
-                    cur_line.append(cur_pixel.coord())
+                    lines[-1].append(cur_pixel.coord())
                     pixels.remove(cur_pixel)
                     break
             else:
                 # no connected pixel was found, close the current line
-                if len(cur_line) == 1:
-                    cur_line = [cur_line[0] - 0.1, cur_line[0] + 0.1]
-                lc.append(cur_line)
+                lines.append([])
                 cur_pixel = None
 
+        lc = vp.LineCollection()
+        for line in lines:
+            if len(line) == 1:
+                lc.append([line[0] - 0.1, line[0] + 0.1])
+            elif len(line) > 1:
+                lc.append(line)
         lc.scale(pen_width)
         document.add(lc, col_idx)
 
