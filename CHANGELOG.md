@@ -1,6 +1,6 @@
 # Change log
 
-## 0.3.0 (UNRELEASED)
+## 0.3.0 (2022-05-16)
 
 * Added `--upscale` option to upscale the input image by an integer factor.
 * Fixed `snake`-mode bug where the last pixel (or group of pixel) would be missing in some cases.
