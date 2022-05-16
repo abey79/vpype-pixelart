@@ -162,8 +162,11 @@ def snake_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_w
     default="big",
     help="operation mode",
 )
+@click.option(
+    "-u", "--upscale", type=vpype_cli.IntRangeType(min=1), default=1, help="upscale factor."
+)
 @vpype_cli.global_processor
-def pixelart(document: vp.Document, image, mode, pen_width: float):
+def pixelart(document: vp.Document, image, mode, pen_width: float, upscale: int):
     """Plot pixel art.
 
     Three modes are available:
@@ -177,7 +180,12 @@ def pixelart(document: vp.Document, image, mode, pen_width: float):
 
     with Image.open(image) as image_file:
         # noinspection PyTypeChecker
-        img = np.array(image_file.convert("RGBA"))
+        img = (
+            np.array(image_file.convert("RGBA"))
+            .repeat(upscale, axis=0)
+            .repeat(upscale, axis=1)
+        )
+
     colors = np.unique(img[:, :, 0:3][img[:, :, 3] == 255], axis=0)
 
     if mode == "big":
