@@ -229,8 +229,21 @@ def pixelart(
     help="operation mode (same as `pixelart` command)",
 )
 @click.option("-k", "--keep-lines", is_flag=True, help="Keep the original lines.")
+@click.option(
+    "-o",
+    "--overdraw",
+    type=vpype_cli.FloatType(),
+    default=0.1,
+    help="(line mode only) pixel fraction to overdraw at the start/end of each line",
+)
 @vpype_cli.layer_processor
-def pixelize(layer: vp.LineCollection, pen_width: float | None, mode: str, keep_lines: bool):
+def pixelize(
+    layer: vp.LineCollection,
+    pen_width: float | None,
+    mode: str,
+    keep_lines: bool,
+    overdraw: float,
+):
     """Turn your vector into pixels, then back into vectors.
 
     This command creates a bitmap from the geometries, and convert the bitmap back into vector
@@ -276,7 +289,7 @@ def pixelize(layer: vp.LineCollection, pen_width: float | None, mode: str, keep_
         big_mode(doc, np.array(img), np.array([color]), pen_width)
     elif mode == "line":
         # noinspection PyTypeChecker
-        line_mode(doc, np.array(img), np.array([color]), pen_width)
+        line_mode(doc, np.array(img), np.array([color]), pen_width, overdraw)
     elif mode == "snake":
         # noinspection PyTypeChecker
         snake_mode(doc, np.array(img), np.array([color]), pen_width)
