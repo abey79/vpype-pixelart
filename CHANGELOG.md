@@ -1,5 +1,9 @@
 # Change log
 
+## 0.4.0 (UNRELEASED)
+
+* Added `-o,--overdraw` option to add overdraw (as fraction of pixel) for the `line` mode.
+
 ## 0.3.0 (2022-05-16)
 
 * Added `--upscale` option to upscale the input image by an integer factor.

@@ -44,7 +44,13 @@ def big_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_wid
         document.add(vp.LineCollection(lines), col_idx)
 
 
-def line_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_width: float):
+def line_mode(
+    document: vp.Document,
+    img: np.ndarray,
+    colors: np.ndarray,
+    pen_width: float,
+    overdraw: float = 0.1,
+):
     for row_idx, line in enumerate(img):
         start = 0
         while True:
@@ -66,7 +72,9 @@ def line_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_wi
 
             #
             layer_id = np.where(np.all(colors == line[start, 0:3], axis=1))[0][0] + 1
-            segment = np.array([row_idx * 1j + (start - 0.1), row_idx * 1j + (end - 0.9)])
+            segment = np.array(
+                [row_idx * 1j + (start - overdraw), row_idx * 1j + (end - 1 + overdraw)]
+            )
             segment *= pen_width
             document.add(vp.LineCollection([segment]), layer_id)
 
@@ -163,10 +171,19 @@ def snake_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_w
     help="operation mode",
 )
 @click.option(
-    "-u", "--upscale", type=vpype_cli.IntRangeType(min=1), default=1, help="upscale factor."
+    "-u", "--upscale", type=vpype_cli.IntRangeType(min=1), default=1, help="upscale factor"
+)
+@click.option(
+    "-o",
+    "--overdraw",
+    type=vpype_cli.FloatType(),
+    default=0.1,
+    help="(line mode only) pixel fraction to overdraw at the start/end of each line",
 )
 @vpype_cli.global_processor
-def pixelart(document: vp.Document, image, mode, pen_width: float, upscale: int):
+def pixelart(
+    document: vp.Document, image, mode, pen_width: float, upscale: int, overdraw: float
+):
     """Plot pixel art.
 
     Three modes are available:
@@ -191,7 +208,7 @@ def pixelart(document: vp.Document, image, mode, pen_width: float, upscale: int)
     if mode == "big":
         big_mode(document, img, colors, pen_width)
     elif mode == "line":
-        line_mode(document, img, colors, pen_width)
+        line_mode(document, img, colors, pen_width, overdraw)
     elif mode == "snake":
         snake_mode(document, img, colors, pen_width)
 
