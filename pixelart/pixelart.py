@@ -174,6 +174,9 @@ def snake_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_w
     "-u", "--upscale", type=vpype_cli.IntRangeType(min=1), default=1, help="upscale factor"
 )
 @click.option(
+    "-bg", "--background", type=vpype_cli.TextType(), help="background color to remove"
+)
+@click.option(
     "-o",
     "--overdraw",
     type=vpype_cli.FloatType(),
@@ -182,7 +185,13 @@ def snake_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_w
 )
 @vpype_cli.global_processor
 def pixelart(
-    document: vp.Document, image, mode, pen_width: float, upscale: int, overdraw: float
+    document: vp.Document,
+    image,
+    mode,
+    pen_width: float,
+    upscale: int,
+    background: str | None,
+    overdraw: float,
 ):
     """Plot pixel art.
 
@@ -204,6 +213,11 @@ def pixelart(
         )
 
     colors = np.unique(img[:, :, 0:3][img[:, :, 3] == 255], axis=0)
+
+    # remove background color if provided
+    if background is not None:
+        bg_color = (np.array(vp.Color(background).as_floats())[0:3] * 255).astype("int")
+        colors = colors[np.any(colors != bg_color, axis=1), :]
 
     if mode == "big":
         big_mode(document, img, colors, pen_width)

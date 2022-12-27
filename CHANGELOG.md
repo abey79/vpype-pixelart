@@ -3,6 +3,7 @@
 ## 0.4.0 (UNRELEASED)
 
 * Added `-o,--overdraw` option to add overdraw (as fraction of pixel) for the `line` mode.
+* Added `-bg,--background` option to `pixelart` to specify a background color (e.g. `white`) to ignore (by default, only fully transparent pixels are ignored).
 
 ## 0.3.0 (2022-05-16)
 
