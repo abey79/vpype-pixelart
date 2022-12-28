@@ -8,7 +8,7 @@ with open("LICENSE") as f:
 
 setup(
     name="vpype-pixelart",
-    version="0.4.0a0",
+    version="0.4.0",
     description="Pixel art plug-in for vpype",
     long_description=readme,
     long_description_content_type="text/markdown",
