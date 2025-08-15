@@ -6,7 +6,7 @@
 
 ### Convert pixelart image to vectors
 
-The `pixelart` command takes an image file as input and converts it to lines according to one of three modes (`big`, `line`, and `small` – see examples below). Each unique color in the the input file results in a new layer created. Pixels which are 100% transparent (alpha = 0) yield no output.
+The `pixelart` command takes an image file as input and converts it to lines according to one of four modes (`big`, `line`, `snake`, and `dot` – see examples below). Each unique color in the the input file results in a new layer created. Pixels which are 100% transparent (alpha = 0) yield no output.
 
 Example invocation:
 
@@ -75,6 +75,10 @@ Detail of the snake algoritm:
 Result plotted with Pentel Sign Pen (using `--pen-width 0.5mm`):
 
 ![vpype banner in MacPaint UX](https://user-images.githubusercontent.com/49431240/163547460-49c6e68d-11ed-4aff-a935-6e663bff4a8d.jpeg)
+
+
+### Mode `dot`
+In this mode, each pixel is drawn using a small dot.
 
 
 ### `pixelize` command

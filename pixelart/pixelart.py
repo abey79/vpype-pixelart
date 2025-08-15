@@ -160,13 +160,25 @@ def snake_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_w
         document.add(lc, col_idx)
 
 
+def dot_mode(document: vp.Document, img: np.ndarray, colors: np.ndarray, pen_width: float):
+    for col_idx, color in enumerate(colors, start=1):
+        indice_i, indice_j = np.nonzero(
+            np.all(img[:, :, 0:3] == color, axis=2) & (img[:, :, 3] == 255)
+        )
+
+        paths = [vp.circle(i, j, pen_width * 0.05)
+                 for i, j in zip(indice_j, indice_i)]
+
+        document.add(vp.LineCollection(paths), col_idx)
+
+
 @vpype_cli.cli.command(group="Pixel Art")
 @click.argument("image", type=vpype_cli.PathType(exists=True, dir_okay=False))
 @click.option("-pw", "--pen-width", type=vpype_cli.LengthType(), default="0.6mm")
 @click.option(
     "-m",
     "--mode",
-    type=click.Choice(choices=["big", "line", "snake"], case_sensitive=False),
+    type=click.Choice(choices=["big", "line", "snake", "dot"], case_sensitive=False),
     default="big",
     help="operation mode",
 )
@@ -195,11 +207,12 @@ def pixelart(
 ):
     """Plot pixel art.
 
-    Three modes are available:
+    Four modes are available:
     - "big" creates a square spiral for each pixel
     - "line" create single horizontal lines for contiguous pixels of the same color
     - "snake" tries to traverse contiguous pixels with a single line, using horizontal and
       vertical strokes
+    - "dot" creates a small dot for each pixel
     """
 
     document.add_to_sources(image)
@@ -225,6 +238,8 @@ def pixelart(
         line_mode(document, img, colors, pen_width, overdraw)
     elif mode == "snake":
         snake_mode(document, img, colors, pen_width)
+    elif mode == "dot":
+        dot_mode(document, img, colors, pen_width)
 
     for col_idx, color in enumerate(colors, start=1):
         document.layers[col_idx].set_property(vp.METADATA_FIELD_COLOR, vp.Color(*color))
